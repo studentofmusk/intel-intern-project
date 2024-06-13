@@ -25,7 +25,7 @@ def generate_contract_text() -> str:
     Business Contract
 
     1. Services Provided:
-    {service_provider_name} agrees to provide the following services to {client_name}. services are service1 service2, service3.
+    {service_provider_name} agrees to provide the following services to {client_name}. services are service1, service2, service3.
 
     2. Payment:
     {client_name} agrees to pay {service_provider_name} the amount of ${amount} for the services described above. Payment shall be made within {notice_days} days of receiving an invoice from {service_provider_name}.
