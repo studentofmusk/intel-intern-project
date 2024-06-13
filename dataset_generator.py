@@ -51,6 +51,6 @@ def generate_dataset(filename:str, batch_size:int=10) -> None:
 
 
 if __name__ == "__main__":
-    generate_dataset("test.csv", 10)
+    generate_dataset("train.csv", 50)
     generate_dataset("eval.csv", 10)
     print("Generated Successfully!")
