@@ -1,51 +1,36 @@
-from flask import Flask, request, jsonify, send_file
-import spacy
-import pdfplumber
+# Import Dependencies
+from flask import Flask, request, jsonify
+import os 
+
+# Import your custom functions
+from models import predict
+from utils import extract_text_from_pdf
+from NER import extract_entities
 
 app = Flask(__name__)
 
-# Load spaCy model
-nlp = spacy.load("en_core_web_sm")
-@app.route('/')
-def index():
-    return send_file('index.html')
-
-@app.route('/parse_pdf', methods=['POST'])
-def parse_pdf():
-    # Check if a PDF file was sent in the request
-    if 'file' not in request.files:
-        print(request.files)
-        return jsonify({'error': 'No file part'})
+@app.route('/process_pdf', methods=['POST'])
+def process_pdf():
+    data = request.get_json()
+    if 'filename' not in data:
+        return jsonify({"success":False, "message":"No filename provided"}), 400
     
-    pdf_file = request.files['file']
-    
-    # Check if the file is a PDF
-    if pdf_file.filename.endswith('.pdf'):
-        # Read the PDF file and extract text
-        with pdfplumber.open(pdf_file) as pdf:
-            pdf_text = ""
-            for page in pdf.pages:
-                pdf_text += page.extract_text()
-        
-        # Process the text using spaCy for named entity recognition
-        doc = nlp(pdf_text)
-        
-        # Extract entities and their labels
-        entities = [(ent.text, ent.label_) for ent in doc.ents]
-        entities_dict = {'entities': []}
-        
-        # Convert entities to dictionary for JSON response
-        check = []
-        for text, label in entities:
-            if text not in check:
-                if label in ['PERSON', 'ORG', 'DATE', 'GPE', 'MONEY', 'PHONE', 'EMAIL']:
-                    entities_dict['entities'].append({'text': text, 'label': label})
-                check.append(text)
-        
-        # Return JSON response
-        return jsonify(entities_dict)
-    else:
-        return jsonify({'error': 'Invalid file format'})
+    filename = data['filename']
+    filepath = os.path.join("docs", filename)
 
-if __name__ == '__main__':
+    if not os.path.exists(filepath):
+        return jsonify({"success":False, "message": "File not found"}), 404
+
+    text = extract_text_from_pdf(filepath)
+
+    res = []
+    for line in text.splitlines():
+        predicted_class = predict(text=line)
+        entities = extract_entities(text=line)
+        res.append({"line": line, "entities": entities, "predicted_class": predicted_class})
+    
+    return jsonify({"results": res})
+
+
+if __name__ == "__main__":
     app.run(debug=True)
