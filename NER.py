@@ -5,7 +5,7 @@ import spacy
 nlp = spacy.load("en_core_web_sm")
 
 
-def extract_details(text:str) -> List[List[str]]:
+def extract_entities(text:str) -> List[List[str]]:
     doc = nlp(text)
 
     # # Initialize dictionaries to store extracted details
@@ -58,5 +58,5 @@ if __name__ == "__main__":
     Hines, Munoz and Dennis"""
     
     
-    extracted_details = extract_details(example_text)
+    extracted_details = extract_entities(example_text)
     print(extracted_details)
