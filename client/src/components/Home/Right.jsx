@@ -5,6 +5,7 @@ import slopeRectangle from "../../images/Slope-Rectangle.png"
 
 
 const Right = ({className}) => {
+  
   return (
     <div 
     style={{backgroundImage:`url(${slopeRectangle})`}} 

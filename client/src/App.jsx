@@ -11,11 +11,16 @@ import "./App.css"
 function App() {
   const [pathname, setPathname] = useState(null);
   const location = useLocation();
+  const [doc, setDoc] = useState([])
+    
 
+
+
+  // Get Path
   const getLocation = ()=>{
     setPathname(location.pathname.slice(1,))
-  
   }
+  
   useEffect(()=>{
     getLocation()
   }, [location.pathname])
@@ -26,11 +31,11 @@ function App() {
       <Header/>
       <Routes>
         <Route exact path="/" element={<Home className="w-9/12 h-full" />} />
-        <Route path="/progress" element={<Progress className="w-9/12 h-full" />} />
-        <Route path="/view" element={<View className="w-9/12 h-full" />} />
+        <Route path="/progress" element={<Progress setDoc={setDoc} className="w-9/12 h-full" />} />
+        <Route path="/view" element={<View doc={doc} setDoc={setDoc} className="w-9/12 h-full" />} />
       </Routes>
       <Footer className="absolute bottom-0 w-full" />
-  {pathname?pathname:""}
+
   </>
   );
 }

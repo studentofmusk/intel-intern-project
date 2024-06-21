@@ -1,14 +1,14 @@
 import React from 'react'
 import car from "../../videos/car.mp4"
 
-const Left = ({className=""}) => {
+const Left = ({state="", className=""}) => {
   return (
     <div className={` ${className}`}>
         <div className='w-full space-y-4'>
             <div className='text-3xl text-my-text '>Learning Patterns</div>
-            <div>processing...</div>
+            <div>{state}</div>
             <div className='h-4 w-full border border-my-text box-border'>
-                <div className='w-[10%] h-full bg-my-text'></div>
+                <div className={`duration-1000 w-[${state==="Uploading..."?"10%":(state==="Processing..."?"20%":(state==="Done !"?"100%":"0%"))}] h-full bg-my-text`}></div>
             </div>
         </div>
         <div className="mt-10 relative w-full h-[350px] overflow-hidden" >
