@@ -52,9 +52,14 @@ def extract_entities(text:str) -> List[List[str]]:
         if label == "O":
             isO = True
             continue
+    
 
         elif isO == False and len(entities) > 0 and label == entities[-1][1]:
-            entities[-1][0] += f" {token}" 
+            if token == ",":
+                entities[-1][0] += f"{token}"
+            else:
+                entities[-1][0] += f" {token}"
+
             continue
 
         entities.append([token, label])

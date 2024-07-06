@@ -1,8 +1,8 @@
 # Import Dependencies
 from flask import Flask, request, jsonify, send_file, send_from_directory
 from werkzeug.utils import secure_filename
-import os 
 from flask_cors import CORS
+import os 
 import re
 
 # Import your custom functions
@@ -65,7 +65,6 @@ def process_pdf():
         else:
             return jsonify({"success": False, "message": "File type not allowed"}), 400
 
-
     elif request.method == "GET":
         filename = request.args.get("filename");
         if not filename:
@@ -77,16 +76,70 @@ def process_pdf():
 
     text = extract_text_from_pdf(filepath)
 
+
     res = []
     for line in text.splitlines():
-        
-
         predicted_class = predict(text=line)
         if predicted_class == 6 or re.search(r"\d\s*\.\s*([\w\s]+)\s*:", line):
             entities = []
         else: entities = extract_entities(text=line)
         res.append({"line": line, "entities": entities, "predicted_class": predicted_class})
     return jsonify({"success":True, "data": res, "message":"Successfully Processed!"}), 201
+
+@app.route('/api/compare', methods=['GET','POST'])
+def compare_pdf():
+    if request.method == "POST":
+        if 'file1' not in request.files or 'file1' not in request.files:
+            return jsonify({"success": False, "message": "No file part"}), 400
+        
+        file = request.files['file1']
+        file2 = request.files['file2']
+        if file.filename == '' or file2.filename == '':
+            return jsonify({"success": False, "message": "No selected file"}), 400
+
+        if file and allowed_file(file.filename) and file2 and allowed_file(file2.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            filename2 = secure_filename(file2.filename)
+            filepath2 = os.path.join(app.config['UPLOAD_FOLDER'], filename2)
+            file.save(filepath)
+            file2.save(filepath2)
+        else:
+            return jsonify({"success": False, "message": "File type not allowed"}), 400
+
+    elif request.method == "GET":
+        filename = request.args.get("filename1");
+        filename2 = request.args.get("filename2");
+        if not filename or not filename2:
+            return jsonify({"success":False, "message":"No filename provided"}), 400
+
+        filepath = os.path.join("docs", filename)
+        filepath2 = os.path.join("docs", filename)
+
+        if not os.path.exists(filepath) or not os.path.exists(filepath2) :
+            return jsonify({"success":False, "message": "File not found"}), 404
+
+        text = extract_text_from_pdf(filepath)
+        text2 = extract_text_from_pdf(filepath2)
+
+
+        res = [[], []]
+        
+        for line in text.splitlines():
+            predicted_class = predict(text=line)
+            if predicted_class == 6 or re.search(r"\d\s*\.\s*([\w\s]+)\s*:", line):
+                entities = []
+            else: entities = extract_entities(text=line)
+            res[0].append({"line": line, "entities": entities, "predicted_class": predicted_class})
+        
+        for line in text2.splitlines():
+            predicted_class = predict(text=line)
+            if predicted_class == 6 or re.search(r"\d\s*\.\s*([\w\s]+)\s*:", line):
+                entities = []
+            else: entities = extract_entities(text=line)
+            res[1].append({"line": line, "entities": entities, "predicted_class": predicted_class})
+
+        return jsonify({"success":True, "data": res, "message":"Successfully Processed!"}), 201
 
 @app.route("/api/generate-doc", methods=["POST", "GET"])
 def generate_pdf():
