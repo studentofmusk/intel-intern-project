@@ -1,47 +1,65 @@
 from typing import List
-import spacy
+import joblib
+import nltk
 
-# Load spaCy's English model 
-nlp = spacy.load("en_core_web_sm")
+def word2features(sent, i):
+    word:str = sent[i][0]
+    features = {
+        'bias':1.0,
+        'word.lower()':word.lower(),
+        'word[-3:]':word[-3:],
+        'word[-2:]':word[-2:],
+        'word.isupper()':word.isupper(),
+        'word.istitle()':word.istitle(),
+        'word.isdigit()':word.isdigit()
+    }
+    if i>0:
+        word1:str = sent[i-1][0]
+        features.update({
+            '-1:word.lower()':word1.lower(),
+            '-1:word.istitle()': word1.istitle(),
+            '-1:word.isupper()': word1.isupper(),
+        })
+    else:
+        features['BOS'] = True
+
+
+    if i < len(sent)-1:
+        word1:str = sent[i+1][0]
+        features.update({
+            '+1:word.lower()': word1.lower(),
+            '+1:word.istitle()': word1.istitle(),
+            '+1:word.isupper()': word1.isupper(),
+        })
+    else:
+        features['EOS'] = True
+
+    return features
+
+
+nlp = joblib.load("crf_ner_model_v1.pkl")
 
 
 def extract_entities(text:str) -> List[List[str]]:
-    doc = nlp(text)
-
-    # # Initialize dictionaries to store extracted details
-    # details = {
-    #     'services_provided': [],
-    #     'payment': [],
-    #     'term': [],
-    #     'confidentiality': [],
-    #     'termination': [],
-    #     'governing_law': [],
-    #     'parties': []
-    # }
-
-    # Iterate through entities recognized by spaCy
-    # for ent in doc.ents:
-    #     if ent.label_ in ('ORG', 'PERSON'):
-    #         details['parties'].append(ent.text)
-    #     elif ent.label_ == 'DATE':
-    #         details['term'].append(ent.text)
-    #     elif ent.label_ == 'MONEY':
-    #         details['payment'].append(ent.text)
-    #     elif 'service' in ent.text.lower():
-    #         details['services_provided'].append(ent.text)
-    #     elif 'confidential' in ent.text.lower() or 'proprietary' in ent.text.lower():
-    #         details['confidentiality'].append(ent.text)
-    #     elif 'termination' in ent.text.lower() or 'terminate' in ent.text.lower():
-    #         details['termination'].append(ent.text)
-    #     elif 'law' in ent.text.lower() or 'state' in ent.text.lower():
-    #         details['governing_law'].append(ent.text)
-    
-    # return details
+    tokens = nltk.word_tokenize(text)
+    token_features = [word2features([(token, "O") for token in tokens], i) for i in range(len(tokens))]
+    y_pred = nlp.predict_single(token_features)
 
     
     entities = []
-    for ent in doc.ents:
-        entities.append([ent.text, ent.label_])
+    isO = False
+    for token, label in zip(tokens, y_pred):
+        if label == "O":
+            isO = True
+            continue
+
+        elif isO == False and len(entities) > 0 and label == entities[-1][1]:
+            entities[-1][0] += f" {token}" 
+            continue
+
+        entities.append([token, label])
+        isO = False
+
     return entities
 
 
@@ -57,6 +75,6 @@ if __name__ == "__main__":
     Cole LLC
     Hines, Munoz and Dennis"""
     
-    
-    extracted_details = extract_entities(example_text)
-    print(extracted_details)
+    for line in example_text.splitlines():
+        extracted_details = extract_entities(line)
+        print(extracted_details)

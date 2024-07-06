@@ -45,7 +45,7 @@ const Left = ({className="", doc=[]}) => {
   return (
     <div className={`${className} `}>
       
-      <center className='text-2xl text-black' >Highlighted Documents</center>
+      <center className='text-xl sm:text-2xl text-black' >Highlighted Documents</center>
 
 
       <div
@@ -73,7 +73,7 @@ const Left = ({className="", doc=[]}) => {
 
       </div>
 
-      <div className='flex flex-col justify-ar h-[80vh] overflow-y-scroll no-scrollbar box-border space-y-3'>
+      <div className='mt-5 flex flex-col justify-ar h-[80vh] overflow-y-scroll no-scrollbar box-border space-y-3'>
         {doc.map((element, idx)=>{
           let p = highlightText(element.line, element.entities, element.predicted_class)
           return <div key={idx}>
@@ -81,30 +81,30 @@ const Left = ({className="", doc=[]}) => {
                     <p className={`
                       relative
                       group 
-                      text-xl 
-                      mt-2 p-3 
-                      border-2
+                      text-xs sm:text-xl 
+                      sm:mt-2 p-1 sm:p-3 
+                      border sm:border-2
                       border-white
-                      rounded-lg
+                      rounded-sm sm:rounded-lg
                       duration-150
                       hover:-translate-y-0.5 
                       hover:border-${getStyle(element.predicted_class)} 
                       `}
-                      
                       >
+                        
                         <span 
                         dangerouslySetInnerHTML={{__html:p}}
                         ></span>
                         <span className={`
                             uppercase
                             font-bold tracking-wider 
-                            text-sm
+                            text-xs sm:text-sm
                             ml-10
                             translate-y-2
                             group-hover:text-${getStyle(element.predicted_class)}
                           text-white`}>
                               {classes[element.predicted_class]}
-                          </span>
+                          </span> 
                       </p>
                     
                 </div>

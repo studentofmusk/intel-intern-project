@@ -10,15 +10,14 @@ import os
 fake: Faker = Faker()
 
 # Creating Contract Text using Faker 
-def generate_contract_text() -> str:
-    # generate random details
-    service_provider_name = fake.company()
-    client_name = fake.company()
-    amount = fake.random_number(digits=5)
-    start_date = fake.date_this_year()
-    end_date = fake.date_this_year()
-    state = fake.state()
-    notice_days = fake.random_int(min=30, max=90)
+def generate_contract_text(
+        service_provider_name:str, 
+        client_name:str, 
+        amount:int, 
+        start_date:str, 
+        end_date:str, 
+        state:str, 
+        notice_days:int) -> str:
 
     # Contract text template
     contract_text:str = f"""
@@ -53,7 +52,7 @@ def generate_contract_text() -> str:
     """
 
     return contract_text
-
+    
 
 # Creating File by go through all documents
 def get_file_name(directory:str) -> str:
@@ -67,6 +66,7 @@ def get_file_name(directory:str) -> str:
 
 # Generate PDF with nice Alignment
 def create_pdf(file_name:str, contract_text:str) -> None:
+
     # Create a PDF file
     doc = SimpleDocTemplate(
         filename=file_name,
@@ -90,16 +90,72 @@ def create_pdf(file_name:str, contract_text:str) -> None:
 
 
 def generate_contract() -> str:
+    # generate random details
+
+    # get path
     docs_dir:str = "docs"
     file_name:str = get_file_name(docs_dir)
-    generated_text:str = generate_contract_text()
+    generated_text:str = generate_contract_text(
+        service_provider_name = fake.company(),
+        client_name = fake.company(),
+        amount = fake.random_number(digits=5),
+        start_date = fake.date_this_year(),
+        end_date = fake.date_this_year(),
+        state = fake.state(),
+        notice_days = fake.random_int(min=30, max=90)
+    )
     create_pdf(
         file_name=file_name,
-        contract_text=generated_text
-        )
+        contract_text=generated_text,
+    )
+    
     return os.path.basename(file_name)
+
+def generate_contract_download(
+        auto:bool=False,
+        filename:str="Demo.pdf", 
+        service_provider_name:str="", 
+        client_name:str="", 
+        amount:int=0, 
+        start_date:str="", 
+        end_date:str="", 
+        state:str="", 
+        notice_days:int=0) -> str:
+    # generate random details
+
+    # get path
+    file_name:str = os.path.join("docs", "download", filename)
+    if auto:
+        generated_text:str = generate_contract_text(
+            service_provider_name = fake.company(),
+            client_name = fake.company(),
+            amount = fake.random_number(digits=5),
+            start_date = fake.date_this_year(),
+            end_date = fake.date_this_year(),
+            state = fake.state(),
+            notice_days = fake.random_int(min=30, max=90)
+        )
+    else:
+        generated_text:str = generate_contract_text(
+            service_provider_name = service_provider_name,
+            client_name = client_name,
+            amount = amount,
+            start_date = start_date,
+            end_date = end_date,
+            state = state,
+            notice_days = notice_days
+        )
+            
+    create_pdf(
+        file_name=file_name,
+        contract_text=generated_text,
+    )
+    
+    return file_name
 
 if __name__=="__main__":
     print("PDF Generated Successfully!\nFilename:",
-    generate_contract()
+    # generate_contract()
+    # generate_contract_download(False, "farooq.pdf", "Company", "Naandhan", 20, "12/02/2023", "15/02/2024", "Tamil Nadu", 53)
+    generate_contract_download(True, filename="farooq.pdf")
     )

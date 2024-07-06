@@ -1,15 +1,21 @@
 import React from 'react'
 import robot from "../../images/robot.png"
+import { Link, useNavigate } from 'react-router-dom'
 
-const Right = ({className=""}) => {
+const Right = ({className="", setRedirected}) => {
+  const navigator = useNavigate();
+  const handleClick = ()=>{
+    setRedirected(true);
+    navigator("/create")
+  }
   return (
     <div 
-    className={`${className} p-12`}  >
-        <img src={robot} className='w-[440px] mb-10' alt="" />
-        <div className='space-y-4 mt-20'>
-          <h3 className="text-2xl text-my-text">Create Your Own Document</h3>
-          <p className="ml-3 text-my-text w-[450px]">some thist to sd kjkds dfj asdfjadsfnvlkjsd dfjf e sdf erg sdf ge safd.df aw fawe fdsfew as dfawetasdfsad</p>
-          <button className='ml-3 py-3 px-7 rounded-md inter bg-my-text text-sm text-white '>QUICK START</button>
+    className={`${className} p-3 sm:p-12`}  >
+        <img src={robot} className='hidden sm:block sm:w-[440px] mb-10' alt="" />
+        <div className='space-y-4 sm:mt-20'>
+          <h3 className="text-xl sm:text-2xl text-my-text">Create Your Own Document</h3>
+          <p className="text-xs sm:text-base ml-3 text-my-text sm:w-[450px]">Your can create business contract</p>
+          <button onClick={handleClick} className='ml-3 py-2 sm:py-3 px-4 sm:px-7 rounded-md inter bg-my-text text-xs sm:text-sm text-white'>QUICK START</button>
         </div>
           
     </div>
