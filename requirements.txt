@@ -1,6 +1,6 @@
 torch --index-url https://download.pytorch.org/whl/cu118 
 Faker==18.9.0
-reportlab==3.8.1
+reportlab==4.2.0
 pymupdf==1.24.5
 transformers==4.41.2
 joblib==1.4.2
@@ -10,3 +10,5 @@ pandas==2.2.2
 flask==3.0.3
 flask-cors==4.0.1
 werkzeug==3.0.3
+sklearn_crfsuite
+numpy==1.26.4
