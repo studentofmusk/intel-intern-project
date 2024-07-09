@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Upload = ({className, selectedFile, setSelectedFile}) => {
+const Upload = ({className, selectedFile, setSelectedFile, id="uploadFile"}) => {
     
     
     const handleFileChange = (event) => {
@@ -28,7 +28,7 @@ const Upload = ({className, selectedFile, setSelectedFile}) => {
             htmlFor="uploadFile">
                 <input 
                     type="file"  
-                    id='uploadFile' 
+                    id={id} 
                     className='hidden' 
                     onChange={handleFileChange}/>
                 {

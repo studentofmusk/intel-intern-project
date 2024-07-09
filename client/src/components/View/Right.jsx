@@ -30,7 +30,7 @@ const Right = ({className="", entities=[]}) => {
         </div>
         <div className='space-y-4 mt-20'>
           <h3 className="text-xl sm:text-2xl text-my-text">Create Your Own Document</h3>
-          <p className="text-xs sm:text-base ml-3 text-my-text sm:w-[450px]">some thist to sd kjkds dfj asdfjadsfnvlkjsd dfjf e sdf erg sdf ge safd.df aw fawe fdsfew as dfawetasdfsad</p>
+          <p className="text-xs sm:text-base ml-3 text-my-text sm:w-[400px]">Customize your contract by specifying the details and clauses that best fit your needs.</p>
           <Link to="/create" className=' block'>
             <button className='ml-3 py-2 sm:py-3 px-4 sm:px-7 rounded-md inter bg-my-text text-xs sm:text-sm text-white '>QUICK START</button>
           </Link>

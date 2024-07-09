@@ -1,0 +1,9 @@
+# Ignore Dockerfile and docker-compose.yml (if they are in the root directory)
+Dockerfile
+docker-compose.yml
+
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+__pycache__
+.ipynb_checkpoints

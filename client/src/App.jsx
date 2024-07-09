@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import View from "./Pages/View";
 import "./App.css"
 import Create from "./Pages/Create";
+import Compare from "./Pages/Compare";
 function App() {
   const navigate = useNavigate();
   const [pathname, setPathname] = useState(null);
@@ -54,6 +55,7 @@ function App() {
         <Route path="/progress" element={<Progress setDoc={setDoc} selectedFile={selectedFile}  className="w-9/12 h-full" />} />
         <Route path="/view" element={<View doc={doc} setDoc={setDoc} className="w-9/12 h-full" />} />
         <Route path="/create" element={<Create className="w-10/12 sm:w-9/12 h-full" />} />
+        <Route path="/compare" element={<Compare className="w-10/12 sm:w-9/12 h-full" />} />
       </Routes>
       <Footer className="sm:absolute bottom-0 w-full" />
 
