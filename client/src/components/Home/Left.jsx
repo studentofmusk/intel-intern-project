@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Upload from './Upload'
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Left = ({className, selectedFile, setSelectedFile=()=>{},  OnClickProceed=()=>{}, Test, setTest=()=>{}}) => {
     
@@ -76,6 +77,7 @@ const Left = ({className, selectedFile, setSelectedFile=()=>{},  OnClickProceed=
             <button onClick={OnClickProceed} className='inter py-2 px-4 rounded-md text-xs sm:text-sm bg-my-primary text-my-secondary'>PROCEED</button>
             
             </center>
+            <div className='sm:ml-10'>You can compare Couple of documents from <Link className='text-my-red underline mt-8' to="/compare">Here! </Link> </div>
             
             
             </div>

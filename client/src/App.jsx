@@ -43,13 +43,7 @@ function App() {
       <Rotator className="w-52 sm:w-80" pathname={pathname} />
       <Header/>
       <Routes>
-        <Route exact path="/" element={<Home 
-                selectedFile={selectedFile} 
-                setSelectedFile={setSelectedFile} 
-                OnClickProceed={OnClickProceed}
-                Test={Test}
-                setTest={setTest}
-                className="w-9/12 h-full" />} />
+        <Route exact path="/" element={<Home selectedFile={selectedFile} setSelectedFile={setSelectedFile} OnClickProceed={OnClickProceed} Test={Test} setTest={setTest} className="w-9/12 h-full" />} />
         <Route path="/progress" element={<Progress setDoc={setDoc} selectedFile={selectedFile}  className="w-9/12 h-full" />} />
         <Route path="/view" element={<View doc={doc} setDoc={setDoc} className="w-9/12 h-full" />} />
         <Route path="/create" element={<Create className="w-10/12 sm:w-9/12 h-full" />} />
