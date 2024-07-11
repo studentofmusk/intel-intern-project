@@ -29,8 +29,6 @@ function App() {
   }
     
 
-
-
   // Get Path
   const getLocation = ()=>{
     setPathname(location.pathname.slice(1,))
@@ -57,7 +55,7 @@ function App() {
         <Route path="/create" element={<Create className="w-10/12 sm:w-9/12 h-full" />} />
         <Route path="/compare" element={<Compare className="w-10/12 sm:w-9/12 h-full" />} />
       </Routes>
-      <Footer className="sm:absolute bottom-0 w-full" />
+      <Footer className="sm:fixed bottom-0 w-full" />
 
   </>
   );

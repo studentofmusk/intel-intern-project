@@ -18,7 +18,7 @@ const View = ({className="", doc=[]}) => {
   return (
     <div className={`${className} flex sm:flex-row flex-col justify-between mx-auto`}>
         <Left className='sm:w-7/12 mt-5 sm:mt-0' doc={doc}/>
-        <Right className='sm:w-4/12 sm:mt-20' entities={entities} />
+        <Right className='sm:w-4/12 mt-10 sm:mt-20' entities={entities} />
     </div>
   )
 }

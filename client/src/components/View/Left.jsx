@@ -73,7 +73,7 @@ const Left = ({className="", doc=[]}) => {
 
       </div>
 
-      <div className='mt-5 flex flex-col justify-ar h-[80vh] overflow-y-scroll no-scrollbar box-border space-y-3'>
+      <div className='mt-5 flex flex-col justify-ar sm:h-[80vh] overflow-y-scroll no-scrollbar box-border space-y-3'>
         {doc.map((element, idx)=>{
           let p = highlightText(element.line, element.entities, element.predicted_class)
           return <div key={idx}>
