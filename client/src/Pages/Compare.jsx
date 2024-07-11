@@ -5,6 +5,8 @@ const Compare = ({className=""}) => {
     const [files, setFiles] = useState([]);
     const [selectedFile1, setSelectedFile1] = useState(null);
     const [selectedFile2, setSelectedFile2] = useState(null);
+    const [isProcessed, setProcessed] = useState(false);
+    const [data, setData] = useState([])
     
     // Fetch Test File names
     useEffect(() => {
@@ -29,13 +31,49 @@ const Compare = ({className=""}) => {
     
         fetchFiles();
       }, []);
+
+
+      const handleSubmit = async(e)=>{
+        e.preventDefault();
+        e.target.disabled = true;
+        let formData = new FormData();
+        formData.append("file1", selectedFile1);
+        formData.append("file2", selectedFile2);
+
+        try{
+          const res = await fetch("/api/compare", {
+            method:"POST",
+            body:formData
+          });
+
+          const response = await res.json();
+
+          if (response.success){
+            setProcessed(true);
+            setData(response.data);
+            console.log(response.data);
+          }
+
+        }catch(e){
+          window.alert("Something went wrong!")
+          console.log(e.message)
+        }finally{
+          e.target.disabled = false;
+        }
+      }
+
+      useEffect(()=>{
+        
+      }, data)
   return (
     <div className={`${className} mx-auto`}>
-        <section className='w-3/6'>
+        <section className='mt-10 sm:mt-20 sm:w-3/6 min-h-[80vh]'>
 
             <h2 className='text-my-text text-2xl sm:text-3xl'>
                 <span className='text-my-red'>Compare</span> Documents
             </h2>
+            {!isProcessed
+            ?<>
             
             <div>
                 <div className='ml-3 mt-10 mb-1 text-my-text'>
@@ -61,7 +99,14 @@ const Compare = ({className=""}) => {
                 id="uploadFile2"
                 />
             </div>
-            {/* <button>Compare</button> */}
+
+            <button className='mt-7 ml-3 bg-my-red text-white p-1 rounded-lg' onClick={handleSubmit}>Compare</button>
+            </>
+            :<div>
+              {data[0].map((element, idx)=>{
+                
+              })}
+            </div>}
         </section>
     </div>
 

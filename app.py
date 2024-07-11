@@ -89,7 +89,7 @@ def process_pdf():
 @app.route('/api/compare', methods=['GET','POST'])
 def compare_pdf():
     if request.method == "POST":
-        if 'file1' not in request.files or 'file1' not in request.files:
+        if 'file1' not in request.files or 'file2' not in request.files:
             return jsonify({"success": False, "message": "No file part"}), 400
         
         file = request.files['file1']
@@ -119,27 +119,27 @@ def compare_pdf():
         if not os.path.exists(filepath) or not os.path.exists(filepath2) :
             return jsonify({"success":False, "message": "File not found"}), 404
 
-        text = extract_text_from_pdf(filepath)
-        text2 = extract_text_from_pdf(filepath2)
+    text = extract_text_from_pdf(filepath)
+    text2 = extract_text_from_pdf(filepath2)
 
 
-        res = [[], []]
-        
-        for line in text.splitlines():
-            predicted_class = predict(text=line)
-            if predicted_class == 6 or re.search(r"\d\s*\.\s*([\w\s]+)\s*:", line):
-                entities = []
-            else: entities = extract_entities(text=line)
-            res[0].append({"line": line, "entities": entities, "predicted_class": predicted_class})
-        
-        for line in text2.splitlines():
-            predicted_class = predict(text=line)
-            if predicted_class == 6 or re.search(r"\d\s*\.\s*([\w\s]+)\s*:", line):
-                entities = []
-            else: entities = extract_entities(text=line)
-            res[1].append({"line": line, "entities": entities, "predicted_class": predicted_class})
+    res = [[], []]
+    
+    for line in text.splitlines():
+        predicted_class = predict(text=line)
+        if predicted_class == 6 or re.search(r"\d\s*\.\s*([\w\s]+)\s*:", line):
+            entities = []
+        else: entities = extract_entities(text=line)
+        res[0].append({"line": line, "entities": entities, "predicted_class": predicted_class})
+    
+    for line in text2.splitlines():
+        predicted_class = predict(text=line)
+        if predicted_class == 6 or re.search(r"\d\s*\.\s*([\w\s]+)\s*:", line):
+            entities = []
+        else: entities = extract_entities(text=line)
+        res[1].append({"line": line, "entities": entities, "predicted_class": predicted_class})
 
-        return jsonify({"success":True, "data": res, "message":"Successfully Processed!"}), 201
+    return jsonify({"success":True, "data": res, "message":"Successfully Processed!"}), 201
 
 @app.route("/api/generate-doc", methods=["POST", "GET"])
 def generate_pdf():

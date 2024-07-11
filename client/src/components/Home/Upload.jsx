@@ -25,7 +25,7 @@ const Upload = ({className, selectedFile, setSelectedFile, id="uploadFile"}) => 
             onDragOver={handleDragOver} 
             onDrop={handleDrop} 
             className={`${className} block rounded-lg ${selectedFile? "bg-white" :"bg-my-text2"} opacity-80`} 
-            htmlFor="uploadFile">
+            htmlFor={id}>
                 <input 
                     type="file"  
                     id={id} 

@@ -16,7 +16,7 @@ const Progress = ({className, setDoc, selectedFile}) => {
     if (file_name === "process"){
       let formData = new FormData();
       formData.append("file", selectedFile);
-      console.log(formData);
+      // console.log(formData);
       res = await fetch("/api/process_pdf", {
         method:"POST",
         body:formData
