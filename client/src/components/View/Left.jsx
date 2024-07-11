@@ -106,7 +106,6 @@ const Left = ({className="", doc=[]}) => {
                               {classes[element.predicted_class]}
                           </span> 
                       </p>
-                    
                 </div>
         })}
         
