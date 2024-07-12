@@ -52,18 +52,7 @@ To build Image
   docker build -t dodocs .
 ```
 
-To create Container
-```bash
-  docker create --name democontainer dodocs
-```
-
-To run
-```bash
-  docker start democontainer
-```
-
-
-Alternatively, you can follow this to build and run the container
+To create Container and Run the container
 
 ```bash
 docker run -d -p 5000:5000 --name do-docs-container do-docs

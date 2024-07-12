@@ -23,4 +23,4 @@ COPY . /app/
 
 EXPOSE 5000
 
-RUN ["flask", "run", "--host=0.0.0.0"]
+CMD ["python", "app.py"]
